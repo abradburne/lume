@@ -9,7 +9,6 @@ defmodule Lume.Components.DropdownMenu do
     * Dark mode support
     * Configurable alignment (left, right)
     * Multiple size variants
-    * Keyboard navigation (up/down arrows, home/end)
     * Click outside to close
 
   ## Examples
@@ -186,7 +185,7 @@ defmodule Lume.Components.DropdownMenu do
   Toggles the visibility of the dropdown menu.
   """
   def toggle_menu(id) do
-    JS.show(
+    JS.toggle(
       to: "##{id}-content",
       display: "block",
       transition: {
