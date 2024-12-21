@@ -1,13 +1,13 @@
 # Lume UI
 
-Lume is a simple UI component library for Phoenix LiveView applications. It provides a set of ready-to-use components for you Phoenix LiveView applications.
+Lume is a simple UI component library for Phoenix LiveView applications. It provides a set of ready-to-use components for your Phoenix LiveView applications.
 
-I got fed up of reinventing the wheel every time I started a new project, and I don't want to always rely on paid UI libraries, so I decided to extract some of the components that I have created from my previous projects into a library.
+I got fed-up of reinventing the wheel every time I started a new project, and I don't want to always rely on paid UI libraries, so I decided to extract some of the components that I have created from my previous projects into a library.
 
 I also wanted to fit into 'Vanilla LiveView', and keep the existing CoreComponents that it provides. So one of the primary
-goal of Lume is to be lightweight, easy to use, customize, and extend.
+goals of Lume is to be lightweight, easy to use, customize, and extend.
 
-This is still in the early stages and currently only provides a handful of components, but I hope to add many more over time.
+It is still in the early stages of development and currently only provides a handful of components, but I hope to add many more over time.
 
 ## Features
 
@@ -74,7 +74,7 @@ end
 
 ### 3. Customizing Sidebar Navigation
 
-Lume provides a simple navigation system that you can customize by providing your own navigation module. Here's how to set it up:
+Lume provides a simple sidebar navigation system that you can customize by providing your own navigation module. Here's how to set it up:
 
 1. Create a navigation module in your application:
 
@@ -110,6 +110,8 @@ defmodule MyAppWeb.UsersLive do
   end
 end
 ```
+
+You can then pass the navigation items and the current item into the sidebar's `nav_items` component to display the navigation list.
 
 3. Customize the sidebar appearance:
 
