@@ -37,14 +37,6 @@ defmodule Lume.MixProject do
     [
       {:phoenix_live_view, "~> 1.0.0"},
       {:phoenix_html, "~> 4.1"},
-      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
-      {:heroicons,
-       github: "tailwindlabs/heroicons",
-       tag: "v2.1.1",
-       sparse: "optimized",
-       app: false,
-       compile: false,
-       depth: 1},
       {:jason, "~> 1.2", only: :test},
       {:floki, ">= 0.30.0", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
