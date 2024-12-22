@@ -9,6 +9,8 @@ goals of Lume is to be lightweight, easy to use, customize, and extend.
 
 It is still in the early stages of development and currently only provides a handful of components, but I hope to add many more over time.
 
+Please take a look at [lume_example](https://github.com/abradburne/lume_example) for an example how to use the components to create an application using a sidebar navigation menu.
+
 ## Features
 
 - Modern, clean design with dark mode support
