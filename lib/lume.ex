@@ -12,6 +12,7 @@ defmodule Lume do
       import Lume.Components.Badge
       import Lume.Components.DropdownMenu
       import Lume.Components.Navbar
+      import Lume.Components.Separator
       import Lume.Components.Sidebar
 
       @before_compile unquote(__MODULE__)

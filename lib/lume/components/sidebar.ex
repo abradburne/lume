@@ -37,6 +37,7 @@ defmodule Lume.Components.Sidebar do
   """
   use Phoenix.Component
   import Lume.Components.UtilComponents
+  import Lume.Components.Separator
   alias Phoenix.LiveView.JS
 
   # Transition settings
@@ -203,24 +204,6 @@ defmodule Lume.Components.Sidebar do
         <% end %>
       </ul>
     </nav>
-    """
-  end
-
-  @doc """
-  Renders a separator line.
-
-  ## Attributes
-
-    * `class` - Additional CSS classes to apply to the separator
-  """
-  attr :class, :string, default: nil
-
-  def separator(assigns) do
-    ~H"""
-    <hr class={[
-      "my-2 bg-gray-200 dark:bg-zinc-700 border-0 h-px",
-      @class
-    ]} />
     """
   end
 
