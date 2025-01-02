@@ -7,10 +7,9 @@ defmodule Lume.Components.DropdownMenu do
     * Menu items with optional icons and variants
     * Smooth transitions using Phoenix.LiveView.JS
     * Dark mode support
-    * Configurable alignment (left, right)
+    * Configurable dropdown alignment (left, right)
     * Multiple size variants
     * Click outside or escape key to close
-    * Keyboard navigation support
     * Support for right-aligned content in menu items
 
   ## Basic Usage
@@ -159,12 +158,6 @@ defmodule Lume.Components.DropdownMenu do
     md: "min-w-64",
     lg: "min-w-80"
   }
-
-  # @menu_items_classes %{
-  #   sm: "px-2 py-1 space-y-2 gap-x-1.5 text-sm",
-  #   md: "px-2 py-1.5 space-y-2 gap-x-2 text-sm",
-  #   lg: "px-3 py-2.5 space-y-2 gap-x-2.5 text-base"
-  # }
 
   @icon_sizes %{
     sm: "h-4 w-4",
@@ -325,7 +318,7 @@ defmodule Lume.Components.DropdownMenu do
   """
   attr :variant, :atom, default: :default, values: @variants
   attr :disabled, :boolean, default: false
-  attr :icon, :string
+  attr :icon, :string, default: nil
   attr :size, :atom, default: :md, values: @sizes
   attr :class, :string, default: nil
   attr :rest, :global
@@ -372,8 +365,6 @@ defmodule Lume.Components.DropdownMenu do
   defp chevron_classes(:lg), do: "h-5 w-5"
 
   defp menu_size_classes(size), do: Map.fetch!(@menu_sizes, size)
-
-  # defp menu_items_classes(size), do: Map.fetch!(@menu_items_classes, size)
 
   defp menu_item_sizes(size), do: Map.fetch!(@menu_item_sizes, size)
 

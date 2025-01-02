@@ -95,7 +95,7 @@ defmodule Lume.Components.DropdownMenuTest do
           render_component(fn assigns ->
             assigns = assign(assigns, :size, size)
             ~H"""
-            <.dropdown_menu id={"#{@size}-menu"} size={@size}>
+            <.dropdown_menu id={"#{@size}-menu"} menu_size={@size}>
               <:trigger>Menu</:trigger>
               <.menu_item>Item</.menu_item>
             </.dropdown_menu>
@@ -142,16 +142,22 @@ defmodule Lume.Components.DropdownMenuTest do
             <.menu_item variant={:default}>
               Default Item
             </.menu_item>
-            <.menu_item variant={:error}>
-              Error Item
+            <.menu_item variant={:warning}>
+              Warning Item
+            </.menu_item>
+            <.menu_item variant={:danger}>
+              Danger Item
             </.menu_item>
           </.dropdown_menu>
           """
         end, %{})
 
       assert html =~ "Default Item"
-      assert html =~ "Error Item"
-      assert html =~ "text-red-700" # Error variant class
+      assert html =~ "text-gray-700" # Default variant class
+      assert html =~ "Warning Item"
+      assert html =~ "text-yellow-600" # Default variant class
+      assert html =~ "Danger Item"
+      assert html =~ "text-red-600" # Error variant class
     end
 
     test "renders disabled menu items" do
