@@ -4,8 +4,7 @@ Lume is a simple UI component library for Phoenix LiveView applications. It prov
 
 I got fed-up of reinventing the wheel every time I started a new project, and I don't want to always rely on paid UI libraries, so I decided to extract some of the components that I have created from my previous projects into a library.
 
-I also wanted to fit into 'Vanilla LiveView', and keep the existing CoreComponents that it provides. So one of the primary
-goals of Lume is to be lightweight, easy to use, customize, and extend.
+I also wanted to fit into 'Vanilla LiveView', and keep the existing CoreComponents that it provides. So one of the primary goals of Lume is to be lightweight, easy to use, customize, and extend.
 
 It is still in the early stages of development and currently only provides a handful of components, but I hope to add many more over time.
 
@@ -18,6 +17,26 @@ Please take a look at [lume_example](https://github.com/abradburne/lume_example)
 - Simple navigation layout
 - Responsive layouts
 - Customizable with Tailwind CSS
+
+## Components
+
+### Avatar
+A component for displaying user avatars, including fallback options for when an image is not available.
+
+### Badge
+A component for displaying small notifications or status indicators, often used for alerts or counts.
+
+### DropdownMenu
+A flexible dropdown menu component that supports various triggers and menu items, including icons and variants.
+
+### Navbar
+A navigation bar component that can include links and other interactive elements for site navigation.
+
+### Separator
+A component used to visually separate content, typically used in lists or menus.
+
+### Sidebar
+A component for creating a sidebar navigation menu, which can contain links and other interactive elements.
 
 ## Installation
 
@@ -160,34 +179,39 @@ By default, the sidebar is 72px wide on desktop. To accommodate it, set the left
 
 Lume provides several components out of the box:
 
-- `<.sidebar>` - A responsive sidebar with navigation
-- `<.navbar>` - A top navigation bar
 - `<.avatar>` - A versatile avatar component with image support and fallback initials
 - `<.badge>` - A flexible badge component for status indicators and labels
+- `<.dropdown_menu>` - A flexible dropdown menu component
+- `<.navbar>` - A top navigation bar
+- `<.separator>` - A simple separator component
+- `<.sidebar>` - A responsive sidebar with navigation
 - More components coming soon...
 
-Example usage in a Phoenix LiveView `app.html.heex` layout template:
+## Examples
+
+### Sidebar Component
+
+The sidebar component is a responsive sidebar navigation menu that supports custom branding and navigation items:
 
 ```heex
 <.sidebar>
-  <.brand title="My App" logo="/images/logo.svg" />
+  <.brand title="My App" logo="/images/logo.svg">
   <.nav_items
     items={MyAppWeb.Navigation.default_items()}
-    current_item={:dashboard}
+    current_item={@current_item}
   />
 </.sidebar>
-<main class="flex flex-1 flex-col lg:min-w-0 lg:pl-72">
-  <.navbar>
-    Dashboard
-    <:right_content>
-      <.avatar
-        alt="John Doe"
-        fallback="JD"
-        image_url="/images/john.jpg"
-      />
-    </:right_content>
-  </.navbar>
-</main>
+```
+
+You can also just use the `inner_block` slot to add custom content to the sidebar, for example:
+```heex
+# Sidebar with custom content
+<.sidebar id="admin-sidebar" title="Admin Panel">
+  <div class="p-4">
+    <h2 class="text-lg font-semibold">Custom Content</h2>
+    <p>Add any content here!</p>
+  </div>
+</.sidebar>
 ```
 
 ### Navbar Component
@@ -278,10 +302,102 @@ The badge component is perfect for status indicators, labels, and counts:
 </.badge>
 ```
 
+### Dropdown Menu
+
+The DropdownMenu component allows you to create flexible dropdown menus with various triggers and menu items.
+
+#### Basic Usage
+
+```elixir
+<.dropdown_menu id="user-menu">
+  <:trigger>
+    <button type="button" class="text-sm">Options</button>
+  </:trigger>
+  <.menu_item>
+    <.link navigate={~p"/profile"} class="w-full">Profile</.link>
+  </.menu_item>
+  <.menu_item>
+    <.link patch={~p"/settings"} class="w-full">Settings</.link>
+  </.menu_item>
+  <.menu_item variant={:error}>
+    <button type="button" class="w-full" phx-click="logout">Sign out</button>
+  </.menu_item>
+</.dropdown_menu>
+```
+
+#### With Icons
+
+You can also add icons to your menu items:
+
+```elixir
+<.dropdown_menu id="icon-menu">
+  <:trigger>
+    <button type="button" class="text-sm">Menu</button>
+  </:trigger>
+
+  <.menu_item icon="hero-user">
+    <.link navigate={~p"/profile"} class="w-full">Profile</.link>
+  </.menu_item>
+
+  <.menu_item icon="hero-cog-6-tooth">
+    <.link navigate={~p"/settings"} class="w-full">Settings</.link>
+  </.menu_item>
+
+  <.separator />
+
+  <.menu_item variant={:error} icon="hero-arrow-right-on-rectangle">
+    <button type="button" class="w-full text-left" href={~p"/users/log_out"} method="delete">Sign out</button>
+  </.menu_item>
+</.dropdown_menu>
+```
+
+#### Custom Alignment
+
+You can customize the alignment of the dropdown menu:
+
+```elixir
+<.dropdown_menu id="right-aligned-menu" align={:right}>
+  <:trigger>
+    <button type="button" class="text-sm">Menu</button>
+  </:trigger>
+  <.menu_item>
+    Profile
+  </.menu_item>
+</.dropdown_menu>
+```
+
+#### Size Variants
+
+The DropdownMenu supports different size variants:
+
+```elixir
+<.dropdown_menu id="large-menu" size={:lg}>
+  <:trigger>
+    <button type="button" class="text-sm">Large Menu</button>
+  </:trigger>
+  <.menu_item>
+    Item 1
+  </.menu_item>
+</.dropdown_menu>
+```
+
+#### Disabled Menu Items
+
+You can disable menu items as well:
+
+```elixir
+<.dropdown_menu id="disabled-item-menu">
+  <:trigger>
+    <button type="button" class="text-sm">Menu</button>
+  </:trigger>
+  <.menu_item disabled={true}>
+    Disabled Item
+  </.menu_item>
+</.dropdown_menu>
+```
 
 ## Copyright and License
 
-Copyright (c) 2024 Alan Bradburne
+Copyright (c) 2025 Alan Bradburne
 
-This library is released under the MIT License. See the
-[LICENSE.md](./LICENSE.md) file.
+This library is released under the MIT License.
