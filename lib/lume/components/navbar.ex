@@ -90,7 +90,7 @@ defmodule Lume.Components.Navbar do
   end
 
   defp show_mobile_sidebar(id) do
-    JS.show(to: "##{id}")
+    JS.show(to: "##{id}", transition: @transition_opacity)
     |> JS.show(to: "##{id}-backdrop", transition: @transition_opacity)
     |> JS.show(to: "##{id}-container", transition: @transition_transform)
   end

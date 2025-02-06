@@ -71,11 +71,12 @@ defmodule Lume.Components.Sidebar do
       </div>
 
       <%!-- Mobile sidebar --%>
-      <div id={@id} class="fixed inset-0 z-50 lg:hidden hidden h-full" aria-modal="true">
+      <!-- MOBILE SIDEBAR -->
+      <div id={@id} class="fixed inset-0 z-50 hidden h-full" aria-modal="true">
         <%!-- Backdrop --%>
         <div
           id={"#{@id}-backdrop"}
-          class="fixed inset-0 bg-gray-900/80 hidden transition-opacity duration-300 h-full"
+          class="fixed inset-0 bg-gray-900/80 hidden h-full"
           aria-hidden="true"
           phx-click={hide_mobile_sidebar(@id)}
         />
@@ -84,7 +85,7 @@ defmodule Lume.Components.Sidebar do
         <div class="fixed inset-0 flex h-full">
           <div
             id={"#{@id}-container"}
-            class="relative flex w-full max-w-xs flex-1 -translate-x-full transition transform duration-300 ease-in-out h-full"
+            class="relative flex w-full max-w-xs flex-1 h-full"
           >
             <%!-- Close button --%>
             <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
@@ -207,7 +208,7 @@ defmodule Lume.Components.Sidebar do
 
   defp hide_mobile_sidebar(id) do
     JS.hide(to: "##{id}", transition: @transition_opacity)
-    |> JS.hide(to: "##{id}-backdrop", transition: @transition_opacity)
     |> JS.hide(to: "##{id}-container", transition: @transition_transform)
+    |> JS.hide(to: "##{id}-backdrop", transition: @transition_opacity)
   end
 end
