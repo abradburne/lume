@@ -39,10 +39,6 @@ defmodule Lume.Components.Navbar do
   alias Phoenix.LiveView.JS
   import Lume.Components.Icon
 
-  @transition_opacity {"duration-300", "opacity-0", "opacity-100"}
-  @transition_transform {"transform duration-300 ease-in-out", "-translate-x-full",
-                         "translate-x-0"}
-
   @doc """
   Renders a navigation bar component.
 
@@ -90,8 +86,11 @@ defmodule Lume.Components.Navbar do
   end
 
   defp show_mobile_sidebar(id) do
+    # Show all elements immediately, then trigger transitions
     JS.show(to: "##{id}")
-    |> JS.show(to: "##{id}-backdrop", transition: @transition_opacity)
-    |> JS.show(to: "##{id}-container", transition: @transition_transform)
+    |> JS.show(to: "##{id}-backdrop")
+    |> JS.show(to: "##{id}-container")
+    |> JS.remove_class("opacity-0", to: "##{id}-backdrop")
+    |> JS.remove_class("-translate-x-full", to: "##{id}-container")
   end
 end

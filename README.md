@@ -48,7 +48,7 @@ A component for creating a sidebar navigation menu, which can contain links and 
 ```elixir
 def deps do
   [
-    {:lume, "~> 0.1.0"}
+    {:lume, "~> 0.2.0"}
   ]
 end
 ```
