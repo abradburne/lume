@@ -8,13 +8,16 @@ defmodule Lume.Components.SeparatorTest do
   describe "separator/1" do
     test "renders a separator line" do
       html =
-        render_component(fn assigns ->
-          ~H"""
-          <.separator />
-          """
-        end, %{})
+        render_component(
+          fn assigns ->
+            ~H"""
+            <.separator />
+            """
+          end,
+          %{}
+        )
 
-        assert html =~ ~r"<hr[^>]*>"
+      assert html =~ ~r"<hr[^>]*>"
     end
   end
 end

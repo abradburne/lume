@@ -17,15 +17,18 @@ defmodule Lume.Components.SidebarTest do
       assigns = %{sample_nav_items: @sample_nav_items, current_item: :dashboard}
 
       html =
-        render_component(fn assigns ->
-          ~H"""
-          <.sidebar id="test-sidebar">
-            <h1 class="text-xl font-extrabold text-zinc-800 dark:text-white">Test App</h1>
-            <img src="/images/logo.svg" alt="Test App" class="h-6 w-auto" />
-            <.nav_items items={@sample_nav_items} current_item={nil} />
-          </.sidebar>
-          """
-        end, assigns)
+        render_component(
+          fn assigns ->
+            ~H"""
+            <.sidebar id="test-sidebar">
+              <h1 class="text-xl font-extrabold text-zinc-800 dark:text-white">Test App</h1>
+              <img src="/images/logo.svg" alt="Test App" class="h-6 w-auto" />
+              <.nav_items items={@sample_nav_items} current_item={nil} />
+            </.sidebar>
+            """
+          end,
+          assigns
+        )
 
       parsed_html = Floki.parse_document!(html)
 
@@ -67,13 +70,16 @@ defmodule Lume.Components.SidebarTest do
       assigns = %{sample_nav_items: @sample_nav_items, current_item: :dashboard}
 
       html =
-        render_component(fn assigns ->
-          ~H"""
-          <.sidebar id="test-sidebar">
-            <.nav_items items={@sample_nav_items} current_item={@current_item} />
-          </.sidebar>
-          """
-        end, assigns)
+        render_component(
+          fn assigns ->
+            ~H"""
+            <.sidebar id="test-sidebar">
+              <.nav_items items={@sample_nav_items} current_item={@current_item} />
+            </.sidebar>
+            """
+          end,
+          assigns
+        )
 
       parsed_html = Floki.parse_document!(html)
 
@@ -88,9 +94,12 @@ defmodule Lume.Components.SidebarTest do
         # Find the nav item by its href
         elements = Floki.find(parsed_html, "a[href='#{item.href}']")
 
-        assert length(elements) == 2, "Expected exactly two links for #{item.name} (desktop and mobile), but found #{length(elements)}."
+        assert length(elements) == 2,
+               "Expected exactly two links for #{item.name} (desktop and mobile), but found #{length(elements)}."
+
         element = hd(elements)
         assert Floki.text(element) =~ item.name
+
         assert Floki.find(element, "[class*='#{item.icon}']") != [],
                "Expected icon #{item.icon} for #{item.name}."
 
@@ -111,19 +120,25 @@ defmodule Lume.Components.SidebarTest do
       assigns = %{sample_nav_items: @sample_nav_items, current_item: :users}
 
       html =
-        render_component(fn assigns ->
-          ~H"""
-          <.sidebar id="test-sidebar">
-            <.nav_items items={@sample_nav_items} current_item={@current_item} />
-          </.sidebar>
-          """
-        end, assigns)
+        render_component(
+          fn assigns ->
+            ~H"""
+            <.sidebar id="test-sidebar">
+              <.nav_items items={@sample_nav_items} current_item={@current_item} />
+            </.sidebar>
+            """
+          end,
+          assigns
+        )
 
       parsed_html = Floki.parse_document!(html)
 
       # Find the active navigation item
       active_item = Floki.find(parsed_html, "[aria-current='page']")
-      assert length(active_item) == 2, "Expected exactly two active navigation items (desktop and mobile) but found #{length(active_item)}."
+
+      assert length(active_item) == 2,
+             "Expected exactly two active navigation items (desktop and mobile) but found #{length(active_item)}."
+
       assert Floki.text(active_item) =~ "Users"
 
       # Check that other items are not marked as active
@@ -138,13 +153,16 @@ defmodule Lume.Components.SidebarTest do
       assigns = %{sample_nav_items: @sample_nav_items}
 
       html =
-        render_component(fn assigns ->
-          ~H"""
-          <.sidebar id="test-sidebar">
-            <.nav_items items={@sample_nav_items} current_item={nil} />
-          </.sidebar>
-          """
-        end, assigns)
+        render_component(
+          fn assigns ->
+            ~H"""
+            <.sidebar id="test-sidebar">
+              <.nav_items items={@sample_nav_items} current_item={nil} />
+            </.sidebar>
+            """
+          end,
+          assigns
+        )
 
       parsed_html = Floki.parse_document!(html)
 
@@ -157,17 +175,23 @@ defmodule Lume.Components.SidebarTest do
       assigns = %{sample_nav_items: @sample_nav_items}
 
       html =
-        render_component(fn assigns ->
-          ~H"""
-          <.sidebar id="test-sidebar">
-            <.nav_items items={@sample_nav_items} current_item={nil} />
-          </.sidebar>
-          """
-        end, assigns)
+        render_component(
+          fn assigns ->
+            ~H"""
+            <.sidebar id="test-sidebar">
+              <.nav_items items={@sample_nav_items} current_item={nil} />
+            </.sidebar>
+            """
+          end,
+          assigns
+        )
 
-      refute html =~ "<img"                 # No logo
-      refute html =~ ~s{font-extrabold}     # No title
-      assert html =~ "Dashboard"            # Default nav item
+      # No logo
+      refute html =~ "<img"
+      # No title
+      refute html =~ ~s{font-extrabold}
+      # Default nav item
+      assert html =~ "Dashboard"
     end
   end
 end

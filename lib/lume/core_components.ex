@@ -53,7 +53,11 @@ defmodule Lume.CoreComponents do
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
       class="relative z-50 hidden"
     >
-      <div id={"#{@id}-bg"} class="bg-zinc-50/90 dark:bg-zinc-800/90 fixed inset-0 transition-opacity" aria-hidden="true" />
+      <div
+        id={"#{@id}-bg"}
+        class="bg-zinc-50/90 dark:bg-zinc-800/90 fixed inset-0 transition-opacity"
+        aria-hidden="true"
+      />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
@@ -119,8 +123,10 @@ defmodule Lume.CoreComponents do
       role="alert"
       class={[
         "fixed top-2 right-2 mr-2 w-80 sm:w-96 z-50 rounded-lg p-3 ring-1",
-        @kind == :info && "bg-emerald-50 text-emerald-800 ring-emerald-500 fill-cyan-900 dark:bg-emerald-900 dark:text-emerald-200",
-        @kind == :error && "bg-rose-50 text-rose-900 shadow-md ring-rose-500 fill-rose-900 dark:bg-rose-900 dark:text-rose-200"
+        @kind == :info &&
+          "bg-emerald-50 text-emerald-800 ring-emerald-500 fill-cyan-900 dark:bg-emerald-900 dark:text-emerald-200",
+        @kind == :error &&
+          "bg-rose-50 text-rose-900 shadow-md ring-rose-500 fill-rose-900 dark:bg-rose-900 dark:text-rose-200"
       ]}
       {@rest}
     >
@@ -359,8 +365,10 @@ defmodule Lume.CoreComponents do
         name={@name}
         class={[
           "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem] dark:text-zinc-300",
-          @errors == [] && "border-zinc-300 focus:border-zinc-400 dark:border-zinc-600 focus:dark:border-zinc-500",
-          @errors != [] && "border-rose-400 focus:border-rose-400 dark:border-rose-400 focus:dark:border-rose-400"
+          @errors == [] &&
+            "border-zinc-300 focus:border-zinc-400 dark:border-zinc-600 focus:dark:border-zinc-500",
+          @errors != [] &&
+            "border-rose-400 focus:border-rose-400 dark:border-rose-400 focus:dark:border-rose-400"
         ]}
         {@rest}
       >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
@@ -381,8 +389,10 @@ defmodule Lume.CoreComponents do
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
           "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 dark:text-zinc-300 dark:bg-zinc-900",
-          @errors == [] && "border-zinc-300 focus:border-zinc-400 dark:border-zinc-600 focus:dark:border-zinc-500",
-          @errors != [] && "border-rose-400 focus:border-rose-400 dark:border-rose-400 focus:dark:border-rose-400"
+          @errors == [] &&
+            "border-zinc-300 focus:border-zinc-400 dark:border-zinc-600 focus:dark:border-zinc-500",
+          @errors != [] &&
+            "border-rose-400 focus:border-rose-400 dark:border-rose-400 focus:dark:border-rose-400"
         ]}
         {@rest}
       />
@@ -491,7 +501,11 @@ defmodule Lume.CoreComponents do
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
           class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700 dark:divide-zinc-700 dark:border-zinc-700 dark:text-zinc-400"
         >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-zinc-50 dark:hover:bg-zinc-800">
+          <tr
+            :for={row <- @rows}
+            id={@row_id && @row_id.(row)}
+            class="group hover:bg-zinc-50 dark:hover:bg-zinc-800"
+          >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               phx-click={@row_click && @row_click.(row)}

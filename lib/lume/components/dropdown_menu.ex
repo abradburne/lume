@@ -165,9 +165,12 @@ defmodule Lume.Components.DropdownMenu do
   }
 
   @variant_classes %{
-    default: "text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 dark:text-gray-300 dark:hover:bg-zinc-700/50 dark:hover:text-white dark:focus:bg-zinc-700/50 dark:focus:text-white",
-    danger: "text-red-600 hover:bg-red-50 hover:text-red-700 focus:bg-red-50 focus:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:text-red-300 dark:focus:bg-red-900/20 dark:focus:text-red-300",
-    warning: "text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700 focus:bg-yellow-50 focus:text-yellow-700 dark:text-yellow-400 dark:hover:bg-yellow-900/20 dark:hover:text-yellow-300 dark:focus:bg-yellow-900/20 dark:focus:text-yellow-300"
+    default:
+      "text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 dark:text-gray-300 dark:hover:bg-zinc-700/50 dark:hover:text-white dark:focus:bg-zinc-700/50 dark:focus:text-white",
+    danger:
+      "text-red-600 hover:bg-red-50 hover:text-red-700 focus:bg-red-50 focus:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:text-red-300 dark:focus:bg-red-900/20 dark:focus:text-red-300",
+    warning:
+      "text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700 focus:bg-yellow-50 focus:text-yellow-700 dark:text-yellow-400 dark:hover:bg-yellow-900/20 dark:hover:text-yellow-300 dark:focus:bg-yellow-900/20 dark:focus:text-yellow-300"
   }
 
   @menu_item_sizes %{
@@ -252,19 +255,11 @@ defmodule Lume.Components.DropdownMenu do
             trigger_label_classes(@size)
           ]}
         >
-          <.icon
-            :if={@icon}
-            name={@icon}
-            class={trigger_icon_classes(@size)}
-          />
+          <.icon :if={@icon} name={@icon} class={trigger_icon_classes(@size)} />
           {@label}
-          <.icon
-            :if={@disclosure}
-            name="hero-chevron-down"
-            class={chevron_classes(@size)}
-          />
+          <.icon :if={@disclosure} name="hero-chevron-down" class={chevron_classes(@size)} />
         </span>
-        <%= render_slot(@trigger) %>
+        {render_slot(@trigger)}
       </button>
 
       <div
@@ -283,7 +278,7 @@ defmodule Lume.Components.DropdownMenu do
           ]}
           aria-labelledby={"#{@id}-trigger"}
         >
-          <%= render_slot(@inner_block) %>
+          {render_slot(@inner_block)}
         </div>
       </div>
     </div>
@@ -341,11 +336,11 @@ defmodule Lume.Components.DropdownMenu do
     >
       <div class="flex min-w-0 items-center gap-x-2">
         <.icon :if={@icon} name={@icon} class={["flex-shrink-0", menu_item_icon_sizes(@size)]} />
-        <span class="truncate"><%= render_slot(@inner_block) %></span>
+        <span class="truncate">{render_slot(@inner_block)}</span>
       </div>
       <%= if @right_content do %>
         <div class="flex-shrink-0 ml-2">
-          <%= render_slot(@right_content) %>
+          {render_slot(@right_content)}
         </div>
       <% end %>
     </div>
