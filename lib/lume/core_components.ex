@@ -2,9 +2,11 @@ defmodule Lume.CoreComponents do
   @moduledoc """
   Provides core UI components.
 
-  This is borrowed from the default CoreComponents module in Phoenix LiveView,
-  but updated with some UI changes to make it more consistent with Lume and
-  add dark mode support.
+  This is taken from the default CoreComponents module in Phoenix LiveView
+  [https://github.com/phoenixframework/phoenix/]
+  but updated to add dark mode support.
+
+  icon has been removed and replaced with a separate component, Lume.Components.Icon
   """
   defmacro __using__(opts) do
     quote do
