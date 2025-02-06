@@ -10,7 +10,9 @@ defmodule Lume do
 
       import Lume.Components.Avatar
       import Lume.Components.Badge
+      import Lume.Components.Breadcrumbs
       import Lume.Components.DropdownMenu
+      import Lume.Components.Icon
       import Lume.Components.Navbar
       import Lume.Components.Separator
       import Lume.Components.Sidebar
