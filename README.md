@@ -404,6 +404,36 @@ You can disable menu items as well:
 </.dropdown_menu>
 ```
 
+### Navbar Component
+
+The navbar component is a flexible top navigation bar that supports responsive design and custom right-side content:
+
+```heex
+# Basic navbar with heading
+<.navbar>
+  Dashboard
+  <:right_content>
+    <button type="button" class="text-gray-400 hover:text-gray-500">
+      <.icon name="hero-bell" class="h-6 w-6" />
+    </button>
+  </:right_content>
+</.navbar>
+```
+
+By default, the navbar will show a mobile menu toggle (aka 'hamburger menu') on mobile (or when the screen is too narrow),
+but you can disable it by setting `menu_toggle` to `false`:
+
+```heex
+<.navbar menu_toggle={false}>
+  Dashboard
+  <:right_content>
+    <button type="button" class="text-gray-400 hover:text-gray-500">
+      <.icon name="hero-bell" class="h-6 w-6" />
+    </button>
+  </:right_content>
+</.navbar>
+```
+
 ### Breadcrumb Component
 
 The breadcrumb component is a flexible breadcrumb navigation component that supports custom paths and labels:

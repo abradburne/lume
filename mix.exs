@@ -1,7 +1,7 @@
 defmodule Lume.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.2.0"
   @source_url "https://github.com/abradburne/lume"
 
   def project do
@@ -38,6 +38,13 @@ defmodule Lume.MixProject do
       {:phoenix_live_view, "~> 1.0.0"},
       {:phoenix_html, "~> 4.1"},
       {:gettext, "~> 0.20"},
+      {:heroicons,
+       github: "tailwindlabs/heroicons",
+       tag: "v2.1.1",
+       sparse: "optimized",
+       app: false,
+       compile: false,
+       depth: 1},
       {:jason, "~> 1.2", only: :test},
       {:floki, ">= 0.30.0", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
@@ -51,7 +58,7 @@ defmodule Lume.MixProject do
       links: %{
         "GitHub" => @source_url,
         "Documentation" => "https://hexdocs.pm/lume"
-        },
+      },
       maintainers: ["Alan Bradburne"],
       files: ~w(lib mix.exs README.md CHANGELOG.md LICENSE.md .formatter.exs)
     ]

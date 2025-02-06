@@ -180,9 +180,7 @@ defmodule Lume.Components.Sidebar do
                       "text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-zinc-800/90 dark:hover:text-indigo-400"
                   )
                 ]}
-                aria-current={
-                  if @current_item == item.nav_item, do: "page", else: nil
-                }
+                aria-current={if @current_item == item.nav_item, do: "page", else: nil}
               >
                 <span class="flex h-6 w-6 items-center justify-center rounded-lg">
                   <.icon
