@@ -40,11 +40,6 @@ defmodule Lume.Components.Sidebar do
   import Lume.Components.Icon
   alias Phoenix.LiveView.JS
 
-  # Transition settings
-  @transition_opacity {"duration-300", "opacity-100", "opacity-0"}
-  @transition_transform {"transform duration-300 ease-in-out", "translate-x-0",
-                         "-translate-x-full"}
-
   @doc """
   Renders the main sidebar component.
 
@@ -57,7 +52,6 @@ defmodule Lume.Components.Sidebar do
     * `inner_block` - The content to be displayed in the sidebar
   """
   attr :id, :string, default: "sidebar"
-
   slot :inner_block, required: true
 
   def sidebar(assigns) do
@@ -75,7 +69,7 @@ defmodule Lume.Components.Sidebar do
         <%!-- Backdrop --%>
         <div
           id={"#{@id}-backdrop"}
-          class="fixed inset-0 bg-gray-900/80 hidden h-full transition-opacity duration-300 ease-in-out opacity-0"
+          class="fixed inset-0 bg-gray-900/80 hidden h-full opacity-0 transition-opacity duration-300 ease-in-out"
           aria-hidden="true"
           phx-click={hide_mobile_sidebar(@id)}
         />
@@ -84,7 +78,7 @@ defmodule Lume.Components.Sidebar do
         <div class="fixed inset-0 flex h-full">
           <div
             id={"#{@id}-container"}
-            class="relative flex w-full max-w-xs flex-1 h-full transition-transform duration-300 ease-in-out -translate-x-full"
+            class="relative flex w-full max-w-xs flex-1 h-full -translate-x-full transition-transform duration-300 ease-in-out"
           >
             <%!-- Close button --%>
             <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
@@ -108,10 +102,19 @@ defmodule Lume.Components.Sidebar do
   defp sidebar_content(assigns) do
     ~H"""
     <div class="flex flex-col overflow-y-auto">
-      <%!-- {render_slot(@brand)} --%>
       {render_slot(@inner_block)}
     </div>
     """
+  end
+
+  defp hide_mobile_sidebar(id) do
+    # First trigger the transitions
+    JS.add_class("opacity-0", to: "##{id}-backdrop")
+    |> JS.add_class("-translate-x-full", to: "##{id}-container")
+    # Then hide elements after transitions complete
+    |> JS.hide(to: "##{id}", transition: {"duration-300", "", ""})
+    |> JS.hide(to: "##{id}-backdrop", transition: {"duration-300", "", ""})
+    |> JS.hide(to: "##{id}-container", transition: {"duration-300", "", ""})
   end
 
   @doc """
@@ -203,15 +206,5 @@ defmodule Lume.Components.Sidebar do
       </ul>
     </nav>
     """
-  end
-
-  defp hide_mobile_sidebar(id) do
-    # First add the transform/opacity classes
-    JS.add_class("-translate-x-full", to: "##{id}-container")
-    |> JS.add_class("opacity-0", to: "##{id}-backdrop")
-    # Then hide after transition completes
-    |> JS.hide(to: "##{id}", transition: {"duration-300", "", ""})
-    |> JS.hide(to: "##{id}-container", transition: {"duration-300", "", ""})
-    |> JS.hide(to: "##{id}-backdrop", transition: {"duration-300", "", ""})
   end
 end
