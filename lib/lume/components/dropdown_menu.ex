@@ -140,8 +140,7 @@ defmodule Lume.Components.DropdownMenu do
   """
   use Phoenix.Component
   alias Phoenix.LiveView.JS
-
-  import Lume.Components.UtilComponents
+  import Lume.Components.Icon
 
   @alignments [:left, :right]
   @variants [:default, :danger, :warning]

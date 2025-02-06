@@ -36,8 +36,8 @@ defmodule Lume.Components.Navbar do
       </.navbar>
   """
   use Phoenix.Component
-  import Lume.Components.UtilComponents
   alias Phoenix.LiveView.JS
+  import Lume.Components.Icon
 
   @transition_opacity {"duration-300", "opacity-0", "opacity-100"}
   @transition_transform {"transform duration-300 ease-in-out", "-translate-x-full",

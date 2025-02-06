@@ -45,7 +45,7 @@ defmodule Lume.Components.Badge do
       </.badge>
   """
   use Phoenix.Component
-  import Lume.Components.UtilComponents
+  import Lume.Components.Icon
 
   @variants [:default, :primary, :success, :warning, :error]
   @sizes [:sm, :md, :lg]

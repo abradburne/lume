@@ -37,6 +37,7 @@ defmodule Lume.MixProject do
     [
       {:phoenix_live_view, "~> 1.0.0"},
       {:phoenix_html, "~> 4.1"},
+      {:gettext, "~> 0.20"},
       {:jason, "~> 1.2", only: :test},
       {:floki, ">= 0.30.0", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
