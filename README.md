@@ -23,6 +23,9 @@ Please take a look at [lume_example](https://github.com/abradburne/lume_example)
 ### Avatar
 A component for displaying user avatars, including fallback options for when an image is not available.
 
+### Breadcrumbs
+A component for displaying navigation breadcrumbs with customizable separators and sizes. Ideal for showing the user's current location in hierarchical navigation structures.
+
 ### Badge
 A component for displaying small notifications or status indicators, often used for alerts or counts.
 
@@ -76,6 +79,8 @@ module.exports = {
 ```
 
 ### 2. Setup Components
+
+Lume has its' own CoreComponents module, adding dark mode support and other tweaks to fit in with the Lume design and functionality. We will keep CoreComponents up to date with any changes made in Phoenix's CoreComponents module.
 
 Delete the existing `CoreComponents` module in your app, `lib/my_app/core_components.ex` and replace it with the Lume components in the html_helpers setup as shown below, along with the Lume components module:
 
@@ -397,6 +402,60 @@ You can disable menu items as well:
     Disabled Item
   </.menu_item>
 </.dropdown_menu>
+```
+
+### Breadcrumb Component
+
+The breadcrumb component is a flexible breadcrumb navigation component that supports custom paths and labels:
+
+```elixir
+<.breadcrumbs id="navigation">
+  <:crumb navigate={~p"/"}>
+    <.icon name="hero-home-mini" class="w-4 h-4 mr-1" /> Home
+  </:crumb>
+  <:crumb navigate={~p"/items"}>Items</:crumb>
+  <:crumb current={true}>Current Item</:crumb>
+</.breadcrumbs>
+```
+
+The breadcrumbs component is designed to be highly customizable while maintaining accessibility and consistent styling. Each crumb can be a link or plain text, and you can include icons or other content within crumbs.
+
+#### Component Properties
+
+- `id`: Required string identifier for the breadcrumbs component
+- `class`: Optional CSS classes to apply to the container
+- `separator_icon`: Optional icon name for the separator (default: "hero-chevron-right-mini")
+- `size`: Optional size variant ("xs", "sm", "md", "lg", default: "sm")
+
+#### Crumb Slots
+
+Each crumb is defined using the `:crumb` slot and supports:
+- `navigate`: Optional path for making the crumb a clickable link
+- `current`: Optional boolean to mark the current/active crumb (adds appropriate styling and aria-current)
+
+#### Size Variants
+
+The breadcrumbs component supports four size variants that affect both text and separator icons:
+```elixir
+<.breadcrumbs id="xs-example" size="xs">
+  <:crumb navigate={~p"/"}>Home</:crumb>
+  <:crumb>Items</:crumb>
+</.breadcrumbs>
+
+<.breadcrumbs id="lg-example" size="lg">
+  <:crumb navigate={~p"/"}>Home</:crumb>
+  <:crumb>Items</:crumb>
+</.breadcrumbs>
+```
+
+#### Custom Separators
+
+You can customize the separator icon using any icon from the Hero Icons set:
+```elixir
+<.breadcrumbs id="custom" separator_icon="hero-chevron-double-right-mini">
+  <:crumb navigate={~p"/"}>Home</:crumb>
+  <:crumb>Items</:crumb>
+</.breadcrumbs>
 ```
 
 ## Copyright and License
