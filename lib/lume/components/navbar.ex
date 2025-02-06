@@ -42,6 +42,7 @@ defmodule Lume.Components.Navbar do
   @transition_opacity {"duration-300", "opacity-0", "opacity-100"}
   @transition_transform {"transform duration-300 ease-in-out", "-translate-x-full",
                          "translate-x-0"}
+  @transition_duration "duration-300"
 
   @doc """
   Renders a navigation bar component.
@@ -90,8 +91,11 @@ defmodule Lume.Components.Navbar do
   end
 
   defp show_mobile_sidebar(id) do
-    JS.show(to: "##{id}", transition: @transition_opacity)
-    |> JS.show(to: "##{id}-backdrop", transition: @transition_opacity)
-    |> JS.show(to: "##{id}-container", transition: @transition_transform)
+    # Show everything with a transition that gives time for the elements to be visible
+    JS.show(to: "##{id}", transition: {"block", "", ""})
+    |> JS.show(to: "##{id}-backdrop", transition: {"block", "", ""})
+    |> JS.show(to: "##{id}-container", transition: {"block", "", ""})
+    |> JS.remove_class("opacity-0", to: "##{id}-backdrop")
+    |> JS.remove_class("-translate-x-full", to: "##{id}-container")
   end
 end
