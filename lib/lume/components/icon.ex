@@ -1,7 +1,6 @@
-defmodule Lume.Components.UtilComponents do
+defmodule Lume.Components.Icon do
   @moduledoc """
-  Utility components for Lume components. These are used internally by other Lume components.
-  Some of these are copied from the default CoreComponents module.
+  A simple icon component.
   """
   use Phoenix.Component
 
@@ -26,4 +25,12 @@ defmodule Lume.Components.UtilComponents do
   end
 
   defp build_class(class), do: class
+
+  # Would like to add support for:
+  # - https://boxicons.com/
+  # - https://feathericons.com
+  # - https://lucide.dev
+  # - https://phosphoricons.com
+  # - https://www.radix-ui.com/icons
+  # - https://tabler.io/icons
 end

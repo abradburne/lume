@@ -4,7 +4,7 @@ Lume is a simple UI component library for Phoenix LiveView applications. It prov
 
 I got fed-up of reinventing the wheel every time I started a new project, and I don't want to always rely on paid UI libraries, so I decided to extract some of the components that I have created from my previous projects into a library.
 
-I also wanted to fit into 'Vanilla LiveView', and keep the existing CoreComponents that it provides. So one of the primary goals of Lume is to be lightweight, easy to use, customize, and extend.
+I also wanted to fit into 'Vanilla LiveView', and use the existing CoreComponents interface. So one of the primary goals of Lume is to be lightweight, easy to use, customize, and extend.
 
 It is still in the early stages of development and currently only provides a handful of components, but I hope to add many more over time.
 
@@ -77,7 +77,7 @@ module.exports = {
 
 ### 2. Setup Components
 
-To use Lume components in your Phoenix application, add it to your `html_helpers` function in your web module:
+Delete the existing `CoreComponents` module in your app, `lib/my_app/core_components.ex` and replace it with the Lume components in the html_helpers setup as shown below, along with the Lume components module:
 
 ```elixir
 defmodule MyAppWeb do
@@ -86,6 +86,9 @@ defmodule MyAppWeb do
   defp html_helpers do
     quote do
       use Lume  # This imports all Lume components
+
+      # Replace existing Core UI components with Lume equivalents
+      import Lume.CoreComponents
 
       # ... rest of your html_helpers setup
     end

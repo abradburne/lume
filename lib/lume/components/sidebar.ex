@@ -36,8 +36,8 @@ defmodule Lume.Components.Sidebar do
       </.sidebar>
   """
   use Phoenix.Component
-  import Lume.Components.UtilComponents
   import Lume.Components.Separator
+  import Lume.Components.Icon
   alias Phoenix.LiveView.JS
 
   # Transition settings
