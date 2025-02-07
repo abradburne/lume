@@ -46,19 +46,21 @@ defmodule Lume.Components.Sidebar do
   ## Attributes
 
     * `id` - Optional unique identifier for the sidebar, defaults to "sidebar"
+    * `desktop_hidden` - Optional boolean to hide the sidebar on desktop view while keeping mobile functionality, defaults to false
 
   ## Slots
 
     * `inner_block` - The content to be displayed in the sidebar
   """
   attr :id, :string, default: "sidebar"
+  attr :desktop_hidden, :boolean, default: false
   slot :inner_block, required: true
 
   def sidebar(assigns) do
     ~H"""
     <div>
       <%!-- Desktop sidebar --%>
-      <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+      <div class={"#{if @desktop_hidden, do: "hidden", else: "hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col"}"}>
         <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4 ring-1 ring-black/10 dark:bg-zinc-900 dark:ring-white/10">
           <.sidebar_content {assigns} />
         </div>
