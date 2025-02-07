@@ -78,7 +78,19 @@ module.exports = {
 }
 ```
 
-### 2. Setup Components
+### 2. Configure Gettext
+
+Lume components use Gettext for internationalization. To manage translations in your application, configure Lume to use your application's Gettext backend:
+
+```elixir
+# In your config/config.exs
+config :lume,
+  gettext_backend: MyAppWeb.Gettext
+```
+
+This allows you to manage all translations, including Lume's UI strings, in your application's `priv/gettext` directory.
+
+### 3. Setup Components
 
 Lume has its' own CoreComponents module, adding dark mode support and other tweaks to fit in with the Lume design and functionality. We will keep CoreComponents up to date with any changes made in Phoenix's CoreComponents module.
 
@@ -101,7 +113,7 @@ defmodule MyAppWeb do
 end
 ```
 
-### 3. Customizing Sidebar Navigation
+### 4. Customizing Sidebar Navigation (optional)
 
 Lume provides a simple sidebar navigation system that you can customize by providing your own navigation module. Here's how to set it up:
 
@@ -189,6 +201,7 @@ Lume provides several components out of the box:
 
 - `<.avatar>` - A versatile avatar component with image support and fallback initials
 - `<.badge>` - A flexible badge component for status indicators and labels
+- `<.breadcrumb>` - A simple breadcrumb component
 - `<.dropdown_menu>` - A flexible dropdown menu component
 - `<.navbar>` - A top navigation bar
 - `<.separator>` - A simple separator component
@@ -196,61 +209,6 @@ Lume provides several components out of the box:
 - More components coming soon...
 
 ## Examples
-
-### Sidebar Component
-
-The sidebar component is a responsive sidebar navigation menu that supports custom branding and navigation items:
-
-```heex
-<.sidebar>
-  <.brand title="My App" logo="/images/logo.svg">
-  <.nav_items
-    items={MyAppWeb.Navigation.default_items()}
-    current_item={@current_item}
-  />
-</.sidebar>
-```
-
-You can also just use the `inner_block` slot to add custom content to the sidebar, for example:
-```heex
-# Sidebar with custom content
-<.sidebar id="admin-sidebar" title="Admin Panel">
-  <div class="p-4">
-    <h2 class="text-lg font-semibold">Custom Content</h2>
-    <p>Add any content here!</p>
-  </div>
-</.sidebar>
-```
-
-### Navbar Component
-
-The navbar component is a flexible top navigation bar that supports responsive design and custom right-side content:
-
-```heex
-# Basic navbar with heading
-<.navbar>
-  Dashboard
-  <:right_content>
-    <button type="button" class="text-gray-400 hover:text-gray-500">
-      <.icon name="hero-bell" class="h-6 w-6" />
-    </button>
-  </:right_content>
-</.navbar>
-```
-
-By default, the navbar will show a mobile menu toggle (aka 'hamburger menu') on mobile (or when the screen is too narrow),
-but you can disable it by setting `menu_toggle` to `false`:
-
-```heex
-<.navbar menu_toggle={false}>
-  Dashboard
-  <:right_content>
-    <button type="button" class="text-gray-400 hover:text-gray-500">
-      <.icon name="hero-bell" class="h-6 w-6" />
-    </button>
-  </:right_content>
-</.navbar>
-```
 
 ### Avatar Component
 
@@ -308,6 +266,61 @@ The badge component is perfect for status indicators, labels, and counts:
 >
   Featured
 </.badge>
+```
+
+
+### Breadcrumb Component
+
+The breadcrumb component is a flexible breadcrumb navigation component that supports custom paths and labels:
+
+```elixir
+<.breadcrumbs id="navigation">
+  <:crumb navigate={~p"/"}>
+    <.icon name="hero-home-mini" class="w-4 h-4 mr-1" /> Home
+  </:crumb>
+  <:crumb navigate={~p"/items"}>Items</:crumb>
+  <:crumb current={true}>Current Item</:crumb>
+</.breadcrumbs>
+```
+
+The breadcrumbs component is designed to be highly customizable while maintaining accessibility and consistent styling. Each crumb can be a link or plain text, and you can include icons or other content within crumbs.
+
+#### Component Properties
+
+- `id`: Required string identifier for the breadcrumbs component
+- `class`: Optional CSS classes to apply to the container
+- `separator_icon`: Optional icon name for the separator (default: "hero-chevron-right-mini")
+- `size`: Optional size variant ("xs", "sm", "md", "lg", default: "sm")
+
+#### Crumb Slots
+
+Each crumb is defined using the `:crumb` slot and supports:
+- `navigate`: Optional path for making the crumb a clickable link
+- `current`: Optional boolean to mark the current/active crumb (adds appropriate styling and aria-current)
+
+#### Size Variants
+
+The breadcrumbs component supports four size variants that affect both text and separator icons:
+```elixir
+<.breadcrumbs id="xs-example" size="xs">
+  <:crumb navigate={~p"/"}>Home</:crumb>
+  <:crumb>Items</:crumb>
+</.breadcrumbs>
+
+<.breadcrumbs id="lg-example" size="lg">
+  <:crumb navigate={~p"/"}>Home</:crumb>
+  <:crumb>Items</:crumb>
+</.breadcrumbs>
+```
+
+#### Custom Separators
+
+You can customize the separator icon using any icon from the Hero Icons set:
+```elixir
+<.breadcrumbs id="custom" separator_icon="hero-chevron-double-right-mini">
+  <:crumb navigate={~p"/"}>Home</:crumb>
+  <:crumb>Items</:crumb>
+</.breadcrumbs>
 ```
 
 ### Dropdown Menu
@@ -434,59 +447,41 @@ but you can disable it by setting `menu_toggle` to `false`:
 </.navbar>
 ```
 
-### Breadcrumb Component
+By default, the navbar will show a mobile menu toggle (aka 'hamburger menu') on mobile (or when the screen is too narrow), but you can disable it by setting `menu_toggle` to `:false`:
 
-The breadcrumb component is a flexible breadcrumb navigation component that supports custom paths and labels:
+### Separator Component
 
-```elixir
-<.breadcrumbs id="navigation">
-  <:crumb navigate={~p"/"}>
-    <.icon name="hero-home-mini" class="w-4 h-4 mr-1" /> Home
-  </:crumb>
-  <:crumb navigate={~p"/items"}>Items</:crumb>
-  <:crumb current={true}>Current Item</:crumb>
-</.breadcrumbs>
+The separator component is a simple separator line that can be used to divide sections of a navbar:
+
+```heex
+<.separator />
 ```
 
-The breadcrumbs component is designed to be highly customizable while maintaining accessibility and consistent styling. Each crumb can be a link or plain text, and you can include icons or other content within crumbs.
+### Sidebar Component
 
-#### Component Properties
+The sidebar component is a responsive sidebar navigation menu that supports custom branding and navigation items:
 
-- `id`: Required string identifier for the breadcrumbs component
-- `class`: Optional CSS classes to apply to the container
-- `separator_icon`: Optional icon name for the separator (default: "hero-chevron-right-mini")
-- `size`: Optional size variant ("xs", "sm", "md", "lg", default: "sm")
-
-#### Crumb Slots
-
-Each crumb is defined using the `:crumb` slot and supports:
-- `navigate`: Optional path for making the crumb a clickable link
-- `current`: Optional boolean to mark the current/active crumb (adds appropriate styling and aria-current)
-
-#### Size Variants
-
-The breadcrumbs component supports four size variants that affect both text and separator icons:
-```elixir
-<.breadcrumbs id="xs-example" size="xs">
-  <:crumb navigate={~p"/"}>Home</:crumb>
-  <:crumb>Items</:crumb>
-</.breadcrumbs>
-
-<.breadcrumbs id="lg-example" size="lg">
-  <:crumb navigate={~p"/"}>Home</:crumb>
-  <:crumb>Items</:crumb>
-</.breadcrumbs>
+```heex
+<.sidebar>
+  <.brand title="My App" logo="/images/logo.svg">
+  <.nav_items
+    items={MyAppWeb.Navigation.default_items()}
+    current_item={@current_item}
+  />
+</.sidebar>
 ```
 
-#### Custom Separators
-
-You can customize the separator icon using any icon from the Hero Icons set:
-```elixir
-<.breadcrumbs id="custom" separator_icon="hero-chevron-double-right-mini">
-  <:crumb navigate={~p"/"}>Home</:crumb>
-  <:crumb>Items</:crumb>
-</.breadcrumbs>
+You can also just use the `inner_block` slot to add custom content to the sidebar, for example:
+```heex
+# Sidebar with custom content
+<.sidebar id="admin-sidebar" title="Admin Panel">
+  <div class="p-4">
+    <h2 class="text-lg font-semibold">Custom Content</h2>
+    <p>Add any content here!</p>
+  </div>
+</.sidebar>
 ```
+
 
 ## Copyright and License
 

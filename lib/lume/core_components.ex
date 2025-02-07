@@ -8,15 +8,7 @@ defmodule Lume.CoreComponents do
 
   icon has been removed and replaced with a separate component, Lume.Components.Icon
   """
-  defmacro __using__(opts) do
-    quote do
-      use Phoenix.Component
-      use Gettext, backend: unquote(opts[:gettext_backend] || Lume.Gettext)
-    end
-  end
-
-  use Phoenix.Component
-  use Gettext, backend: Lume.Gettext
+  use Lume.ComponentBase
 
   alias Phoenix.LiveView.JS
 
@@ -651,9 +643,9 @@ defmodule Lume.CoreComponents do
     # with our gettext backend as first argument. Translations are
     # available in the errors.po file (as we use the "errors" domain).
     if count = opts[:count] do
-      Gettext.dngettext(LumeExampleWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(Lume.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(LumeExampleWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(Lume.Gettext, "errors", msg, opts)
     end
   end
 
