@@ -11,6 +11,7 @@ defmodule Lume do
       import Lume.Components.Avatar
       import Lume.Components.Badge
       import Lume.Components.Breadcrumbs
+      import Lume.Components.Button
       import Lume.Components.DropdownMenu
       import Lume.Components.Icon
       import Lume.Components.Navbar
