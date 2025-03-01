@@ -166,7 +166,7 @@ defmodule Lume.Components.DropdownMenu do
 
   @variant_classes %{
     default:
-      "text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 dark:text-gray-300 dark:hover:bg-zinc-700/50 dark:hover:text-white dark:focus:bg-zinc-700/50 dark:focus:text-white",
+      "text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 dark:text-gray-300 dark:hover:bg-zinc-700/50 dark:hover:text-white dark:focus:bg-gray-100 dark:focus:text-gray-900",
     danger:
       "text-red-600 hover:bg-red-50 hover:text-red-700 focus:bg-red-50 focus:text-red-700 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:text-red-300 dark:focus:bg-red-900/20 dark:focus:text-red-300",
     warning:
@@ -294,6 +294,12 @@ defmodule Lume.Components.DropdownMenu do
     * `disabled` - Optional boolean to disable the item
     * `icon` - Optional icon name to display
     * `class` - Additional CSS classes for the menu item
+    * `href` - Optional URL for traditional browser navigation
+    * `navigate` - Optional path for LiveView navigation
+    * `patch` - Optional path for LiveView patching
+    * `replace` - Optional boolean to replace browser history when using navigate or patch
+    * `method` - Optional HTTP method to use with href (e.g., "delete", "post")
+    * `csrf_token` - Optional CSRF token for non-GET requests (defaults to true)
     * `rest` - Any additional HTML attributes
 
   ## Slots
@@ -309,12 +315,30 @@ defmodule Lume.Components.DropdownMenu do
           <kbd class="text-xs">⌘D</kbd>
         </:right_content>
       </.menu_item>
+
+      <.menu_item href="/profile" icon="hero-user">
+        View Profile
+      </.menu_item>
+
+      <.menu_item navigate={~p"/settings"} icon="hero-cog-6-tooth">
+        Settings
+      </.menu_item>
+
+      <.menu_item href={~p"/posts/1"} method="delete" icon="hero-trash">
+        Delete Post
+      </.menu_item>
   """
   attr :variant, :atom, default: :default, values: @variants
   attr :disabled, :boolean, default: false
   attr :icon, :string, default: nil
   attr :size, :atom, default: :md, values: @sizes
   attr :class, :string, default: nil
+  attr :href, :string, default: nil
+  attr :navigate, :string, default: nil
+  attr :patch, :string, default: nil
+  attr :replace, :boolean, default: false
+  attr :method, :string, default: nil
+  attr :csrf_token, :any, default: true
   attr :rest, :global
 
   slot :inner_block, required: true
@@ -334,17 +358,44 @@ defmodule Lume.Components.DropdownMenu do
       ]}
       {@rest}
     >
-      <div class="flex min-w-0 items-center gap-x-2">
-        <.icon :if={@icon} name={@icon} class={["flex-shrink-0", menu_item_icon_sizes(@size)]} />
-        <span class="truncate">{render_slot(@inner_block)}</span>
-      </div>
-      <%= if @right_content do %>
-        <div class="flex-shrink-0 ml-2">
-          {render_slot(@right_content)}
+      <%= if navigation_present?(assigns) do %>
+        <.link
+          class="flex min-w-0 w-full items-center justify-between"
+          href={@href}
+          navigate={@navigate}
+          patch={@patch}
+          replace={@replace}
+          method={@method}
+          csrf_token={@csrf_token}
+          tabindex="-1"
+        >
+          <div class="flex min-w-0 items-center gap-x-2">
+            <.icon :if={@icon} name={@icon} class={["flex-shrink-0", menu_item_icon_sizes(@size)]} />
+            <span class="truncate">{render_slot(@inner_block)}</span>
+          </div>
+          <%= if @right_content do %>
+            <div class="flex-shrink-0 ml-2">
+              {render_slot(@right_content)}
+            </div>
+          <% end %>
+        </.link>
+      <% else %>
+        <div class="flex min-w-0 items-center gap-x-2">
+          <.icon :if={@icon} name={@icon} class={["flex-shrink-0", menu_item_icon_sizes(@size)]} />
+          <span class="truncate">{render_slot(@inner_block)}</span>
         </div>
+        <%= if @right_content do %>
+          <div class="flex-shrink-0 ml-2">
+            {render_slot(@right_content)}
+          </div>
+        <% end %>
       <% end %>
     </div>
     """
+  end
+
+  defp navigation_present?(assigns) do
+    Enum.any?([assigns[:href], assigns[:navigate], assigns[:patch]], & &1)
   end
 
   defp menu_alignment_classes(:left), do: "left-0 origin-top-left"

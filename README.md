@@ -29,6 +29,9 @@ A component for displaying navigation breadcrumbs with customizable separators a
 ### Badge
 A component for displaying small notifications or status indicators, often used for alerts or counts.
 
+### Button
+A versatile button component with multiple variants and sizes.
+
 ### DropdownMenu
 A flexible dropdown menu component that supports various triggers and menu items, including icons and variants.
 
@@ -94,7 +97,7 @@ This allows you to manage all translations, including Lume's UI strings, in your
 
 Lume has its' own CoreComponents module, adding dark mode support and other tweaks to fit in with the Lume design and functionality. We will keep CoreComponents up to date with any changes made in Phoenix's CoreComponents module.
 
-Delete the existing `CoreComponents` module in your app, `lib/my_app/core_components.ex` and replace it with the Lume components in the html_helpers setup as shown below, along with the Lume components module:
+In your `lib/my_app_web.ex` module, delete the existing `CoreComponents` module and replace it with the Lume components in the html_helpers setup as shown below, along with the Lume components module:
 
 ```elixir
 defmodule MyAppWeb do
@@ -117,20 +120,20 @@ end
 
 Lume provides a simple sidebar navigation system that you can customize by providing your own navigation module. Here's how to set it up:
 
-1. Create a navigation module in your application:
+1. Create a navigation module in your application (e.g. `lib/my_app_web/navigation.ex`):
 
 ```elixir
 defmodule MyAppWeb.Navigation do
   @default_items [
     # Basic navigation item
-    %{icon: "hero-home", label: "Dashboard", nav_item: :dashboard, path: "/"},
+    %{icon: "hero-home", label: "Dashboard", nav_item: :dashboard, navigate: "/"},
 
     # Add a separator between groups
     %{separator: true},
 
     # Another navigation group
-    %{icon: "hero-users", label: "Users", nav_item: :users, path: "/users"},
-    %{icon: "hero-cog", label: "Settings", nav_item: :settings, path: "/settings"}
+    %{icon: "hero-users", label: "Users", nav_item: :users, navigate: "/users"},
+    %{icon: "hero-cog", label: "Settings", nav_item: :settings, navigate: "/settings"}
   ]
 
   def default_items do
@@ -161,7 +164,7 @@ You can use the `brand` and `nav_items` components to add a header and navigatio
 ```heex
 # Basic sidebar with navigation
 <.sidebar>
-  <.brand title="My App" logo="/images/logo.svg">
+  <.brand title="My App" logo="/images/logo.svg" />
   <.nav_items
     items={MyAppWeb.Navigation.default_items()}
     current_item={@current_item}
@@ -186,11 +189,13 @@ The sidebar component supports:
 The `brand` component supports:
 - `title`: Optional text to display at the top of the sidebar
 - `logo`: Optional path to your logo image
+- `class`: Optional CSS classes to apply to the branding section
 
 The `nav_items` component supports:
 - `current_item`: Atom representing the current navigation item
 - `items`: List of navigation items, where each item can be:
-  - Regular item: `%{icon: "hero-*", label: "Label", nav_item: :atom, path: "/path"}`
+  - Regular item: `%{icon: "hero-*", label: "Label", nav_item: :atom, navigate: "/path"}` or
+  - Regular item: `%{icon: "hero-*", label: "Label", nav_item: :atom, href: "/path", method: "delete"}`
   - Separator: `%{separator: true}` to add a visual divider between groups
 
 By default, the sidebar is 72px wide on desktop. To accommodate it, set the left padding of your main content container to 72px.
@@ -202,6 +207,7 @@ Lume provides several components out of the box:
 - `<.avatar>` - A versatile avatar component with image support and fallback initials
 - `<.badge>` - A flexible badge component for status indicators and labels
 - `<.breadcrumb>` - A simple breadcrumb component
+- `<.button>` - A versatile button component with multiple variants and sizes
 - `<.dropdown_menu>` - A flexible dropdown menu component
 - `<.navbar>` - A top navigation bar
 - `<.separator>` - A simple separator component
@@ -239,6 +245,40 @@ The avatar component supports images with fallback initials, multiple sizes, and
 />
 ```
 
+### Button Component
+
+The button component supports multiple variants, sizes, and styling options:
+
+```heex
+# Basic button
+<.button>Send!</.button>
+
+# Button with Phoenix event
+<.button phx-click="go" class="ml-2">Send!</.button>
+
+# Button with leading icon
+<.button icon="hero-user-group">Teams</.button>
+
+# Outline button without border
+<.button variant="outline" border={false}>Borderless</.button>
+
+# Left-aligned full-width button
+<.button justify="start" class="w-full">Left aligned</.button>
+
+# Large secondary button
+<.button variant="secondary" size="lg">Large Button</.button>
+```
+
+#### Button Component Properties
+
+- `type`: HTML button type attribute, defaults to "button"
+- `class`: Additional CSS classes to apply to the button
+- `variant`: Button style variant ("primary", "secondary", "outline", "minimal"), defaults to "primary"
+- `size`: Size variant ("xs", "sm", "md", "lg", "xl"), defaults to "md"
+- `icon`: Optional icon name (from heroicons)
+- `justify`: Content alignment ("start", "center", "end"), defaults to "center"
+- `border`: Whether to show a border (only applies to outline variant), defaults to true
+
 ### Badge Component
 
 The badge component is perfect for status indicators, labels, and counts:
@@ -267,7 +307,6 @@ The badge component is perfect for status indicators, labels, and counts:
   Featured
 </.badge>
 ```
-
 
 ### Breadcrumb Component
 
@@ -463,7 +502,7 @@ The sidebar component is a responsive sidebar navigation menu that supports cust
 
 ```heex
 <.sidebar>
-  <.brand title="My App" logo="/images/logo.svg">
+  <.brand title="My App" logo="/images/logo.svg" />
   <.nav_items
     items={MyAppWeb.Navigation.default_items()}
     current_item={@current_item}
@@ -475,6 +514,8 @@ You can also just use the `inner_block` slot to add custom content to the sideba
 ```heex
 # Sidebar with custom content
 <.sidebar id="admin-sidebar" title="Admin Panel">
+  <.brand title="Admin Panel" class="text-primary-600" />
+  <.separator />
   <div class="p-4">
     <h2 class="text-lg font-semibold">Custom Content</h2>
     <p>Add any content here!</p>
@@ -482,6 +523,32 @@ You can also just use the `inner_block` slot to add custom content to the sideba
 </.sidebar>
 ```
 
+The sidebar component also supports a `bottom_content` slot for content that should appear at the bottom of the sidebar:
+```heex
+# Sidebar with bottom content
+<.sidebar>
+  <.brand title="My App" logo="/images/logo.svg" />
+  <.nav_items
+    items={MyAppWeb.Navigation.default_items()}
+    current_item={@current_item}
+  />
+
+  <:bottom_content>
+    <div class="p-2 border-t border-gray-200 dark:border-gray-700">
+      <p class="text-sm text-gray-500"> 2025 My Company</p>
+    </div>
+  </:bottom_content>
+</.sidebar>
+```
+
+The sidebar component supports:
+- `id`: Optional unique identifier for the sidebar, defaults to "sidebar"
+- `desktop_hidden`: Optional boolean to hide the sidebar on desktop view while keeping mobile functionality
+
+## Credits
+
+Designed and built by [Alan Bradburne](https://alanb.dev).
+CoreComponents originally forked from [PhoenixComponents](https://github.com/phoenixframework/phoenix_components).
 
 ## Copyright and License
 

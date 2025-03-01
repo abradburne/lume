@@ -13,7 +13,7 @@ defmodule Lume.Components.Sidebar do
 
       # Basic sidebar with branding and navigation
       <.sidebar>
-        <.brand title="My App" logo="/images/logo.svg">
+        <.brand title="My App" logo="/images/logo.svg" />
         <.nav_items
           items={[
             %{icon: "hero-home", label: "Dashboard", path: "/", nav_item: :dashboard},
@@ -27,12 +27,26 @@ defmodule Lume.Components.Sidebar do
 
       # Sidebar with custom content
       <.sidebar id="admin-sidebar">
-        <.brand title="MyApp Admin Panel">
+        <.brand title="MyApp Admin Panel" />
         <.separator />
         <div class="p-4">
           <h2 class="text-lg font-semibold">Custom Content</h2>
           <p>Add any content here!</p>
         </div>
+      </.sidebar>
+
+      # Sidebar with bottom content
+      <.sidebar id="admin-sidebar">
+        <.brand title="MyApp Admin Panel" />
+        <.separator />
+        <div class="p-4">
+          <h2 class="text-lg font-semibold">Custom Content</h2>
+          <p>Add any content here!</p>
+        </div>
+        <.separator />
+        <.bottom_content>
+          <p>Custom bottom content</p>
+        </.bottom_content>
       </.sidebar>
   """
   use Phoenix.Component
@@ -51,10 +65,12 @@ defmodule Lume.Components.Sidebar do
   ## Slots
 
     * `inner_block` - The content to be displayed in the sidebar
+    * `bottom_content` - Content to be displayed at the bottom of the sidebar
   """
   attr :id, :string, default: "sidebar"
-  attr :desktop_hidden, :boolean, default: false
+  attr :desktop_hidden, :boolean, default: false, doc: "Optional boolean to hide the sidebar on desktop view while keeping mobile functionality"
   slot :inner_block, required: true
+  slot :bottom_content, doc: "Content to be displayed at the bottom of the sidebar"
 
   def sidebar(assigns) do
     ~H"""
@@ -103,8 +119,13 @@ defmodule Lume.Components.Sidebar do
 
   defp sidebar_content(assigns) do
     ~H"""
-    <div class="flex flex-col overflow-y-auto">
-      {render_slot(@inner_block)}
+    <div class="flex flex-col h-full justify-between">
+      <div class="flex-grow overflow-y-auto">
+        {render_slot(@inner_block)}
+      </div>
+      <div :if={@bottom_content != []} class="mt-auto pt-4">
+        {render_slot(@bottom_content)}
+      </div>
     </div>
     """
   end
@@ -126,6 +147,8 @@ defmodule Lume.Components.Sidebar do
 
     * `title` - Optional title text to display at the top
     * `logo` - Optional path to logo image
+    * `class` - Additional CSS classes to apply to the branding section
+
 
   ## Slots
 
@@ -133,12 +156,17 @@ defmodule Lume.Components.Sidebar do
   """
   attr :title, :string, default: nil
   attr :logo, :string, default: nil
+  attr :class, :string, default: nil
 
   slot :inner_block
 
   def brand(assigns) do
     ~H"""
-    <div :if={@title || @logo} class="flex h-16 shrink-0 items-center">
+    <div :if={@title || @logo}
+      class={[
+        "flex h-16 shrink-0 items-center",
+        @class
+      ]}>
       <div :if={@title || @logo} class="flex shrink-0 items-center gap-2">
         <img :if={@logo} src={@logo} alt={@title || "Logo"} class="h-6 w-auto" />
         <h1 :if={@title} class="text-xl font-extrabold text-zinc-800 dark:text-white">
@@ -159,6 +187,7 @@ defmodule Lume.Components.Sidebar do
         * `icon` - Icon name (for heroicons, use "hero-*")
         * `label` - Display text
         * `path` - Navigation path
+        * `method` - HTTP method for the navigation link (e.g., "get", "post")
         * `nav_item` - Atom identifier
         * `separator` - Boolean to render a separator instead of a nav item
     * `current_item` - Atom identifying the current navigation item
@@ -176,7 +205,9 @@ defmodule Lume.Components.Sidebar do
           <% else %>
             <li class="w-full px-2">
               <.link
-                navigate={item.path}
+                navigate={Map.get(item, :navigate)}
+                href={Map.get(item, :href)}
+                method={Map.get(item, :method, "get")}
                 class={[
                   "group flex gap-x-3 rounded-md text-sm leading-6 w-full py-2",
                   if(@current_item == item.nav_item,

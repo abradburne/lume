@@ -214,36 +214,6 @@ defmodule Lume.CoreComponents do
   end
 
   @doc """
-  Renders a button.
-
-  ## Examples
-
-      <.button>Send!</.button>
-      <.button phx-click="go" class="ml-2">Send!</.button>
-  """
-  attr :type, :string, default: nil
-  attr :class, :string, default: nil
-  attr :rest, :global, include: ~w(disabled form name value)
-
-  slot :inner_block, required: true
-
-  def button(assigns) do
-    ~H"""
-    <button
-      type={@type}
-      class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 dark:bg-zinc-800 dark:hover:bg-zinc-600 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
-        @class
-      ]}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </button>
-    """
-  end
-
-  @doc """
   Renders an input with label and error messages.
 
   A `Phoenix.HTML.FormField` may be passed as argument,
@@ -276,7 +246,7 @@ defmodule Lume.CoreComponents do
 
   attr :type, :string,
     default: "text",
-    values: ~w(checkbox color date datetime-local email file month number password
+    values: ~w(checkbox color date datetime-local email file hidden month number password
                range search select tel text textarea time url week)
 
   attr :field, Phoenix.HTML.FormField,
@@ -301,6 +271,12 @@ defmodule Lume.CoreComponents do
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
     |> input()
+  end
+
+  def input(%{type: "hidden"} = assigns) do
+    ~H"""
+    <input type="hidden" id={@id} name={@name} value={@value} {@rest} />
+    """
   end
 
   def input(%{type: "checkbox"} = assigns) do
